@@ -1,0 +1,5 @@
+version: "3.5"
+services:
+  isard-app:
+    volumes:
+      - "/opt/src/isard/src/:/isard"
