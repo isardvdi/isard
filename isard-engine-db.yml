@@ -1,0 +1,40 @@
+version: "3.5"
+services:
+  isard-database:
+    container_name: isard-database
+    volumes:
+      - "/opt/isard/database:/data"
+      - "/etc/localtime:/etc/localtime:ro"
+    networks:
+      - isard_network
+    image: rethinkdb
+    restart: unless-stopped
+
+  isard-engine:
+    container_name: isard-engine
+    volumes:
+      #### Source inside (Development)
+      - "/opt/src/isard/src:/isard"
+      #### Production
+      - "/opt/isard/sshkeys:/root/.ssh"
+      - "/opt/isard/certs:/certs"
+      - "/opt/isard/logs:/isard/logs"
+      - "/opt/isard/database/wizard:/isard/install/wizard"
+      - "/etc/localtime:/etc/localtime:ro"
+    networks:
+      - isard_network
+    env_file:
+      - .env
+    image: isard/engine:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: dockers/engine/Dockerfile
+      target: production
+    restart: unless-stopped
+    depends_on:
+      - isard-database
+
+networks:
+  isard_network:
+    external: false
+    name: isard_network

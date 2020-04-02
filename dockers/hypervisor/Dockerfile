@@ -17,12 +17,12 @@ RUN apk add --no-cache \
     ovmf \
     supervisor
 
-RUN apk add --no-cache --virtual .build_deps \
-    build-base \
-    python3-dev 
-RUN pip3 install --no-cache-dir websockify
+#RUN apk add --no-cache --virtual .build_deps \
+#    build-base \
+#    python3-dev 
+#RUN pip3 install --no-cache-dir websockify
 #==0.8.0
-RUN apk del .build_deps
+#RUN apk del .build_deps
 
 RUN ln -s /usr/bin/qemu-system-x86_64 /usr/bin/qemu-kvm
 
@@ -46,17 +46,16 @@ RUN echo -e 'spice_listen = "0.0.0.0"\n \
 RUN mkdir -p /etc/pki/libvirt-spice /var/log/supervisor
 
 COPY dockers/hypervisor/reset-hyper.sh /
-COPY dockers/hypervisor/start_proxy.py /
 COPY dockers/hypervisor/supervisord.conf /etc/supervisord.conf
 COPY dockers/hypervisor/vlans-add.sh /
 COPY dockers/hypervisor/vlans-discover.sh /
 
 EXPOSE 5900-6399
-EXPOSE 6400-6899
 
 VOLUME [ "/isard" ]
 
 CMD [ "/usr/bin/supervisord", "-c", "/etc/supervisord.conf" ]
+
 FROM production as development
 RUN apk add nano bash
 

@@ -1,0 +1,1317 @@
+networks:
+  isard_network:
+    external: false
+    name: isard_network
+services:
+  isard-app:
+    build:
+      context: .
+      dockerfile: dockers/app/Dockerfile
+      target: production
+    container_name: isard-app
+    depends_on:
+    - isard-database
+    - isard-hypervisor
+    extra_hosts:
+      isard-engine: 127.0.0.1
+    image: isard/app:1.2.2
+    networks:
+      isard_network: {}
+    restart: unless-stopped
+    volumes:
+    - /opt/isard/certs:/certs:rw
+    - /etc/localtime:/etc/localtime:ro
+    - /opt/src/isard/src:/isard:rw
+    - /opt/isard/backups:/isard/backups:rw
+    - /opt/isard/database/wizard:/isard/install/wizard:rw
+    - /opt/isard/logs:/isard/logs:rw
+    - /opt/isard/uploads:/isard/uploads:rw
+    - /opt/isard/sshkeys:/root/.ssh:rw
+  isard-database:
+    container_name: isard-database
+    image: rethinkdb
+    networks:
+      isard_network: {}
+    restart: unless-stopped
+    volumes:
+    - /opt/isard/database:/data:rw
+    - /etc/localtime:/etc/localtime:ro
+  isard-grafana:
+    build:
+      context: .
+      dockerfile: dockers/grafana/Dockerfile
+    container_name: isard-grafana
+    environment:
+      ISARD_PUBLIC_DOMAIN: "false"
+    image: isard/grafana:1.2.2
+    networks:
+      isard_network: {}
+    ports:
+    - mode: host
+      protocol: tcp
+      published: 3000
+      target: 3000
+    restart: unless-stopped
+    volumes:
+    - /opt/isard/grafana/grafana/data:/grafana/data:rw
+    - /opt/isard/grafana/graphite/conf:/opt/graphite/conf:rw
+    - /opt/isard/grafana/graphite/storage:/opt/graphite/storage:rw
+  isard-hypervisor:
+    build:
+      context: .
+      dockerfile: dockers/hypervisor/Dockerfile
+    container_name: isard-hypervisor
+    environment:
+      HTML5_WEBSOCKETS: '100'
+    image: isard/hypervisor:1.2.2
+    networks:
+      isard_network: {}
+    ports:
+    - published: 2022
+      target: 22
+    - published: 5900
+      target: 5900
+    - published: 5901
+      target: 5901
+    - published: 5902
+      target: 5902
+    - published: 5903
+      target: 5903
+    - published: 5904
+      target: 5904
+    - published: 5905
+      target: 5905
+    - published: 5906
+      target: 5906
+    - published: 5907
+      target: 5907
+    - published: 5908
+      target: 5908
+    - published: 5909
+      target: 5909
+    - published: 5910
+      target: 5910
+    - published: 5911
+      target: 5911
+    - published: 5912
+      target: 5912
+    - published: 5913
+      target: 5913
+    - published: 5914
+      target: 5914
+    - published: 5915
+      target: 5915
+    - published: 5916
+      target: 5916
+    - published: 5917
+      target: 5917
+    - published: 5918
+      target: 5918
+    - published: 5919
+      target: 5919
+    - published: 5920
+      target: 5920
+    - published: 5921
+      target: 5921
+    - published: 5922
+      target: 5922
+    - published: 5923
+      target: 5923
+    - published: 5924
+      target: 5924
+    - published: 5925
+      target: 5925
+    - published: 5926
+      target: 5926
+    - published: 5927
+      target: 5927
+    - published: 5928
+      target: 5928
+    - published: 5929
+      target: 5929
+    - published: 5930
+      target: 5930
+    - published: 5931
+      target: 5931
+    - published: 5932
+      target: 5932
+    - published: 5933
+      target: 5933
+    - published: 5934
+      target: 5934
+    - published: 5935
+      target: 5935
+    - published: 5936
+      target: 5936
+    - published: 5937
+      target: 5937
+    - published: 5938
+      target: 5938
+    - published: 5939
+      target: 5939
+    - published: 5940
+      target: 5940
+    - published: 5941
+      target: 5941
+    - published: 5942
+      target: 5942
+    - published: 5943
+      target: 5943
+    - published: 5944
+      target: 5944
+    - published: 5945
+      target: 5945
+    - published: 5946
+      target: 5946
+    - published: 5947
+      target: 5947
+    - published: 5948
+      target: 5948
+    - published: 5949
+      target: 5949
+    - published: 5950
+      target: 5950
+    - published: 5951
+      target: 5951
+    - published: 5952
+      target: 5952
+    - published: 5953
+      target: 5953
+    - published: 5954
+      target: 5954
+    - published: 5955
+      target: 5955
+    - published: 5956
+      target: 5956
+    - published: 5957
+      target: 5957
+    - published: 5958
+      target: 5958
+    - published: 5959
+      target: 5959
+    - published: 5960
+      target: 5960
+    - published: 5961
+      target: 5961
+    - published: 5962
+      target: 5962
+    - published: 5963
+      target: 5963
+    - published: 5964
+      target: 5964
+    - published: 5965
+      target: 5965
+    - published: 5966
+      target: 5966
+    - published: 5967
+      target: 5967
+    - published: 5968
+      target: 5968
+    - published: 5969
+      target: 5969
+    - published: 5970
+      target: 5970
+    - published: 5971
+      target: 5971
+    - published: 5972
+      target: 5972
+    - published: 5973
+      target: 5973
+    - published: 5974
+      target: 5974
+    - published: 5975
+      target: 5975
+    - published: 5976
+      target: 5976
+    - published: 5977
+      target: 5977
+    - published: 5978
+      target: 5978
+    - published: 5979
+      target: 5979
+    - published: 5980
+      target: 5980
+    - published: 5981
+      target: 5981
+    - published: 5982
+      target: 5982
+    - published: 5983
+      target: 5983
+    - published: 5984
+      target: 5984
+    - published: 5985
+      target: 5985
+    - published: 5986
+      target: 5986
+    - published: 5987
+      target: 5987
+    - published: 5988
+      target: 5988
+    - published: 5989
+      target: 5989
+    - published: 5990
+      target: 5990
+    - published: 5991
+      target: 5991
+    - published: 5992
+      target: 5992
+    - published: 5993
+      target: 5993
+    - published: 5994
+      target: 5994
+    - published: 5995
+      target: 5995
+    - published: 5996
+      target: 5996
+    - published: 5997
+      target: 5997
+    - published: 5998
+      target: 5998
+    - published: 5999
+      target: 5999
+    - published: 6000
+      target: 6000
+    - published: 6001
+      target: 6001
+    - published: 6002
+      target: 6002
+    - published: 6003
+      target: 6003
+    - published: 6004
+      target: 6004
+    - published: 6005
+      target: 6005
+    - published: 6006
+      target: 6006
+    - published: 6007
+      target: 6007
+    - published: 6008
+      target: 6008
+    - published: 6009
+      target: 6009
+    - published: 6010
+      target: 6010
+    - published: 6011
+      target: 6011
+    - published: 6012
+      target: 6012
+    - published: 6013
+      target: 6013
+    - published: 6014
+      target: 6014
+    - published: 6015
+      target: 6015
+    - published: 6016
+      target: 6016
+    - published: 6017
+      target: 6017
+    - published: 6018
+      target: 6018
+    - published: 6019
+      target: 6019
+    - published: 6020
+      target: 6020
+    - published: 6021
+      target: 6021
+    - published: 6022
+      target: 6022
+    - published: 6023
+      target: 6023
+    - published: 6024
+      target: 6024
+    - published: 6025
+      target: 6025
+    - published: 6026
+      target: 6026
+    - published: 6027
+      target: 6027
+    - published: 6028
+      target: 6028
+    - published: 6029
+      target: 6029
+    - published: 6030
+      target: 6030
+    - published: 6031
+      target: 6031
+    - published: 6032
+      target: 6032
+    - published: 6033
+      target: 6033
+    - published: 6034
+      target: 6034
+    - published: 6035
+      target: 6035
+    - published: 6036
+      target: 6036
+    - published: 6037
+      target: 6037
+    - published: 6038
+      target: 6038
+    - published: 6039
+      target: 6039
+    - published: 6040
+      target: 6040
+    - published: 6041
+      target: 6041
+    - published: 6042
+      target: 6042
+    - published: 6043
+      target: 6043
+    - published: 6044
+      target: 6044
+    - published: 6045
+      target: 6045
+    - published: 6046
+      target: 6046
+    - published: 6047
+      target: 6047
+    - published: 6048
+      target: 6048
+    - published: 6049
+      target: 6049
+    - published: 6050
+      target: 6050
+    - published: 6051
+      target: 6051
+    - published: 6052
+      target: 6052
+    - published: 6053
+      target: 6053
+    - published: 6054
+      target: 6054
+    - published: 6055
+      target: 6055
+    - published: 6056
+      target: 6056
+    - published: 6057
+      target: 6057
+    - published: 6058
+      target: 6058
+    - published: 6059
+      target: 6059
+    - published: 6060
+      target: 6060
+    - published: 6061
+      target: 6061
+    - published: 6062
+      target: 6062
+    - published: 6063
+      target: 6063
+    - published: 6064
+      target: 6064
+    - published: 6065
+      target: 6065
+    - published: 6066
+      target: 6066
+    - published: 6067
+      target: 6067
+    - published: 6068
+      target: 6068
+    - published: 6069
+      target: 6069
+    - published: 6070
+      target: 6070
+    - published: 6071
+      target: 6071
+    - published: 6072
+      target: 6072
+    - published: 6073
+      target: 6073
+    - published: 6074
+      target: 6074
+    - published: 6075
+      target: 6075
+    - published: 6076
+      target: 6076
+    - published: 6077
+      target: 6077
+    - published: 6078
+      target: 6078
+    - published: 6079
+      target: 6079
+    - published: 6080
+      target: 6080
+    - published: 6081
+      target: 6081
+    - published: 6082
+      target: 6082
+    - published: 6083
+      target: 6083
+    - published: 6084
+      target: 6084
+    - published: 6085
+      target: 6085
+    - published: 6086
+      target: 6086
+    - published: 6087
+      target: 6087
+    - published: 6088
+      target: 6088
+    - published: 6089
+      target: 6089
+    - published: 6090
+      target: 6090
+    - published: 6091
+      target: 6091
+    - published: 6092
+      target: 6092
+    - published: 6093
+      target: 6093
+    - published: 6094
+      target: 6094
+    - published: 6095
+      target: 6095
+    - published: 6096
+      target: 6096
+    - published: 6097
+      target: 6097
+    - published: 6098
+      target: 6098
+    - published: 6099
+      target: 6099
+    - published: 6100
+      target: 6100
+    - published: 6101
+      target: 6101
+    - published: 6102
+      target: 6102
+    - published: 6103
+      target: 6103
+    - published: 6104
+      target: 6104
+    - published: 6105
+      target: 6105
+    - published: 6106
+      target: 6106
+    - published: 6107
+      target: 6107
+    - published: 6108
+      target: 6108
+    - published: 6109
+      target: 6109
+    - published: 6110
+      target: 6110
+    - published: 6111
+      target: 6111
+    - published: 6112
+      target: 6112
+    - published: 6113
+      target: 6113
+    - published: 6114
+      target: 6114
+    - published: 6115
+      target: 6115
+    - published: 6116
+      target: 6116
+    - published: 6117
+      target: 6117
+    - published: 6118
+      target: 6118
+    - published: 6119
+      target: 6119
+    - published: 6120
+      target: 6120
+    - published: 6121
+      target: 6121
+    - published: 6122
+      target: 6122
+    - published: 6123
+      target: 6123
+    - published: 6124
+      target: 6124
+    - published: 6125
+      target: 6125
+    - published: 6126
+      target: 6126
+    - published: 6127
+      target: 6127
+    - published: 6128
+      target: 6128
+    - published: 6129
+      target: 6129
+    - published: 6130
+      target: 6130
+    - published: 6131
+      target: 6131
+    - published: 6132
+      target: 6132
+    - published: 6133
+      target: 6133
+    - published: 6134
+      target: 6134
+    - published: 6135
+      target: 6135
+    - published: 6136
+      target: 6136
+    - published: 6137
+      target: 6137
+    - published: 6138
+      target: 6138
+    - published: 6139
+      target: 6139
+    - published: 6140
+      target: 6140
+    - published: 6141
+      target: 6141
+    - published: 6142
+      target: 6142
+    - published: 6143
+      target: 6143
+    - published: 6144
+      target: 6144
+    - published: 6145
+      target: 6145
+    - published: 6146
+      target: 6146
+    - published: 6147
+      target: 6147
+    - published: 6148
+      target: 6148
+    - published: 6149
+      target: 6149
+    - published: 6150
+      target: 6150
+    - published: 6151
+      target: 6151
+    - published: 6152
+      target: 6152
+    - published: 6153
+      target: 6153
+    - published: 6154
+      target: 6154
+    - published: 6155
+      target: 6155
+    - published: 6156
+      target: 6156
+    - published: 6157
+      target: 6157
+    - published: 6158
+      target: 6158
+    - published: 6159
+      target: 6159
+    - published: 6160
+      target: 6160
+    - published: 6161
+      target: 6161
+    - published: 6162
+      target: 6162
+    - published: 6163
+      target: 6163
+    - published: 6164
+      target: 6164
+    - published: 6165
+      target: 6165
+    - published: 6166
+      target: 6166
+    - published: 6167
+      target: 6167
+    - published: 6168
+      target: 6168
+    - published: 6169
+      target: 6169
+    - published: 6170
+      target: 6170
+    - published: 6171
+      target: 6171
+    - published: 6172
+      target: 6172
+    - published: 6173
+      target: 6173
+    - published: 6174
+      target: 6174
+    - published: 6175
+      target: 6175
+    - published: 6176
+      target: 6176
+    - published: 6177
+      target: 6177
+    - published: 6178
+      target: 6178
+    - published: 6179
+      target: 6179
+    - published: 6180
+      target: 6180
+    - published: 6181
+      target: 6181
+    - published: 6182
+      target: 6182
+    - published: 6183
+      target: 6183
+    - published: 6184
+      target: 6184
+    - published: 6185
+      target: 6185
+    - published: 6186
+      target: 6186
+    - published: 6187
+      target: 6187
+    - published: 6188
+      target: 6188
+    - published: 6189
+      target: 6189
+    - published: 6190
+      target: 6190
+    - published: 6191
+      target: 6191
+    - published: 6192
+      target: 6192
+    - published: 6193
+      target: 6193
+    - published: 6194
+      target: 6194
+    - published: 6195
+      target: 6195
+    - published: 6196
+      target: 6196
+    - published: 6197
+      target: 6197
+    - published: 6198
+      target: 6198
+    - published: 6199
+      target: 6199
+    - published: 6400
+      target: 6400
+    - published: 6401
+      target: 6401
+    - published: 6402
+      target: 6402
+    - published: 6403
+      target: 6403
+    - published: 6404
+      target: 6404
+    - published: 6405
+      target: 6405
+    - published: 6406
+      target: 6406
+    - published: 6407
+      target: 6407
+    - published: 6408
+      target: 6408
+    - published: 6409
+      target: 6409
+    - published: 6410
+      target: 6410
+    - published: 6411
+      target: 6411
+    - published: 6412
+      target: 6412
+    - published: 6413
+      target: 6413
+    - published: 6414
+      target: 6414
+    - published: 6415
+      target: 6415
+    - published: 6416
+      target: 6416
+    - published: 6417
+      target: 6417
+    - published: 6418
+      target: 6418
+    - published: 6419
+      target: 6419
+    - published: 6420
+      target: 6420
+    - published: 6421
+      target: 6421
+    - published: 6422
+      target: 6422
+    - published: 6423
+      target: 6423
+    - published: 6424
+      target: 6424
+    - published: 6425
+      target: 6425
+    - published: 6426
+      target: 6426
+    - published: 6427
+      target: 6427
+    - published: 6428
+      target: 6428
+    - published: 6429
+      target: 6429
+    - published: 6430
+      target: 6430
+    - published: 6431
+      target: 6431
+    - published: 6432
+      target: 6432
+    - published: 6433
+      target: 6433
+    - published: 6434
+      target: 6434
+    - published: 6435
+      target: 6435
+    - published: 6436
+      target: 6436
+    - published: 6437
+      target: 6437
+    - published: 6438
+      target: 6438
+    - published: 6439
+      target: 6439
+    - published: 6440
+      target: 6440
+    - published: 6441
+      target: 6441
+    - published: 6442
+      target: 6442
+    - published: 6443
+      target: 6443
+    - published: 6444
+      target: 6444
+    - published: 6445
+      target: 6445
+    - published: 6446
+      target: 6446
+    - published: 6447
+      target: 6447
+    - published: 6448
+      target: 6448
+    - published: 6449
+      target: 6449
+    - published: 6450
+      target: 6450
+    - published: 6451
+      target: 6451
+    - published: 6452
+      target: 6452
+    - published: 6453
+      target: 6453
+    - published: 6454
+      target: 6454
+    - published: 6455
+      target: 6455
+    - published: 6456
+      target: 6456
+    - published: 6457
+      target: 6457
+    - published: 6458
+      target: 6458
+    - published: 6459
+      target: 6459
+    - published: 6460
+      target: 6460
+    - published: 6461
+      target: 6461
+    - published: 6462
+      target: 6462
+    - published: 6463
+      target: 6463
+    - published: 6464
+      target: 6464
+    - published: 6465
+      target: 6465
+    - published: 6466
+      target: 6466
+    - published: 6467
+      target: 6467
+    - published: 6468
+      target: 6468
+    - published: 6469
+      target: 6469
+    - published: 6470
+      target: 6470
+    - published: 6471
+      target: 6471
+    - published: 6472
+      target: 6472
+    - published: 6473
+      target: 6473
+    - published: 6474
+      target: 6474
+    - published: 6475
+      target: 6475
+    - published: 6476
+      target: 6476
+    - published: 6477
+      target: 6477
+    - published: 6478
+      target: 6478
+    - published: 6479
+      target: 6479
+    - published: 6480
+      target: 6480
+    - published: 6481
+      target: 6481
+    - published: 6482
+      target: 6482
+    - published: 6483
+      target: 6483
+    - published: 6484
+      target: 6484
+    - published: 6485
+      target: 6485
+    - published: 6486
+      target: 6486
+    - published: 6487
+      target: 6487
+    - published: 6488
+      target: 6488
+    - published: 6489
+      target: 6489
+    - published: 6490
+      target: 6490
+    - published: 6491
+      target: 6491
+    - published: 6492
+      target: 6492
+    - published: 6493
+      target: 6493
+    - published: 6494
+      target: 6494
+    - published: 6495
+      target: 6495
+    - published: 6496
+      target: 6496
+    - published: 6497
+      target: 6497
+    - published: 6498
+      target: 6498
+    - published: 6499
+      target: 6499
+    - published: 6500
+      target: 6500
+    - published: 6501
+      target: 6501
+    - published: 6502
+      target: 6502
+    - published: 6503
+      target: 6503
+    - published: 6504
+      target: 6504
+    - published: 6505
+      target: 6505
+    - published: 6506
+      target: 6506
+    - published: 6507
+      target: 6507
+    - published: 6508
+      target: 6508
+    - published: 6509
+      target: 6509
+    - published: 6510
+      target: 6510
+    - published: 6511
+      target: 6511
+    - published: 6512
+      target: 6512
+    - published: 6513
+      target: 6513
+    - published: 6514
+      target: 6514
+    - published: 6515
+      target: 6515
+    - published: 6516
+      target: 6516
+    - published: 6517
+      target: 6517
+    - published: 6518
+      target: 6518
+    - published: 6519
+      target: 6519
+    - published: 6520
+      target: 6520
+    - published: 6521
+      target: 6521
+    - published: 6522
+      target: 6522
+    - published: 6523
+      target: 6523
+    - published: 6524
+      target: 6524
+    - published: 6525
+      target: 6525
+    - published: 6526
+      target: 6526
+    - published: 6527
+      target: 6527
+    - published: 6528
+      target: 6528
+    - published: 6529
+      target: 6529
+    - published: 6530
+      target: 6530
+    - published: 6531
+      target: 6531
+    - published: 6532
+      target: 6532
+    - published: 6533
+      target: 6533
+    - published: 6534
+      target: 6534
+    - published: 6535
+      target: 6535
+    - published: 6536
+      target: 6536
+    - published: 6537
+      target: 6537
+    - published: 6538
+      target: 6538
+    - published: 6539
+      target: 6539
+    - published: 6540
+      target: 6540
+    - published: 6541
+      target: 6541
+    - published: 6542
+      target: 6542
+    - published: 6543
+      target: 6543
+    - published: 6544
+      target: 6544
+    - published: 6545
+      target: 6545
+    - published: 6546
+      target: 6546
+    - published: 6547
+      target: 6547
+    - published: 6548
+      target: 6548
+    - published: 6549
+      target: 6549
+    - published: 6550
+      target: 6550
+    - published: 6551
+      target: 6551
+    - published: 6552
+      target: 6552
+    - published: 6553
+      target: 6553
+    - published: 6554
+      target: 6554
+    - published: 6555
+      target: 6555
+    - published: 6556
+      target: 6556
+    - published: 6557
+      target: 6557
+    - published: 6558
+      target: 6558
+    - published: 6559
+      target: 6559
+    - published: 6560
+      target: 6560
+    - published: 6561
+      target: 6561
+    - published: 6562
+      target: 6562
+    - published: 6563
+      target: 6563
+    - published: 6564
+      target: 6564
+    - published: 6565
+      target: 6565
+    - published: 6566
+      target: 6566
+    - published: 6567
+      target: 6567
+    - published: 6568
+      target: 6568
+    - published: 6569
+      target: 6569
+    - published: 6570
+      target: 6570
+    - published: 6571
+      target: 6571
+    - published: 6572
+      target: 6572
+    - published: 6573
+      target: 6573
+    - published: 6574
+      target: 6574
+    - published: 6575
+      target: 6575
+    - published: 6576
+      target: 6576
+    - published: 6577
+      target: 6577
+    - published: 6578
+      target: 6578
+    - published: 6579
+      target: 6579
+    - published: 6580
+      target: 6580
+    - published: 6581
+      target: 6581
+    - published: 6582
+      target: 6582
+    - published: 6583
+      target: 6583
+    - published: 6584
+      target: 6584
+    - published: 6585
+      target: 6585
+    - published: 6586
+      target: 6586
+    - published: 6587
+      target: 6587
+    - published: 6588
+      target: 6588
+    - published: 6589
+      target: 6589
+    - published: 6590
+      target: 6590
+    - published: 6591
+      target: 6591
+    - published: 6592
+      target: 6592
+    - published: 6593
+      target: 6593
+    - published: 6594
+      target: 6594
+    - published: 6595
+      target: 6595
+    - published: 6596
+      target: 6596
+    - published: 6597
+      target: 6597
+    - published: 6598
+      target: 6598
+    - published: 6599
+      target: 6599
+    - published: 6600
+      target: 6600
+    - published: 6601
+      target: 6601
+    - published: 6602
+      target: 6602
+    - published: 6603
+      target: 6603
+    - published: 6604
+      target: 6604
+    - published: 6605
+      target: 6605
+    - published: 6606
+      target: 6606
+    - published: 6607
+      target: 6607
+    - published: 6608
+      target: 6608
+    - published: 6609
+      target: 6609
+    - published: 6610
+      target: 6610
+    - published: 6611
+      target: 6611
+    - published: 6612
+      target: 6612
+    - published: 6613
+      target: 6613
+    - published: 6614
+      target: 6614
+    - published: 6615
+      target: 6615
+    - published: 6616
+      target: 6616
+    - published: 6617
+      target: 6617
+    - published: 6618
+      target: 6618
+    - published: 6619
+      target: 6619
+    - published: 6620
+      target: 6620
+    - published: 6621
+      target: 6621
+    - published: 6622
+      target: 6622
+    - published: 6623
+      target: 6623
+    - published: 6624
+      target: 6624
+    - published: 6625
+      target: 6625
+    - published: 6626
+      target: 6626
+    - published: 6627
+      target: 6627
+    - published: 6628
+      target: 6628
+    - published: 6629
+      target: 6629
+    - published: 6630
+      target: 6630
+    - published: 6631
+      target: 6631
+    - published: 6632
+      target: 6632
+    - published: 6633
+      target: 6633
+    - published: 6634
+      target: 6634
+    - published: 6635
+      target: 6635
+    - published: 6636
+      target: 6636
+    - published: 6637
+      target: 6637
+    - published: 6638
+      target: 6638
+    - published: 6639
+      target: 6639
+    - published: 6640
+      target: 6640
+    - published: 6641
+      target: 6641
+    - published: 6642
+      target: 6642
+    - published: 6643
+      target: 6643
+    - published: 6644
+      target: 6644
+    - published: 6645
+      target: 6645
+    - published: 6646
+      target: 6646
+    - published: 6647
+      target: 6647
+    - published: 6648
+      target: 6648
+    - published: 6649
+      target: 6649
+    - published: 6650
+      target: 6650
+    - published: 6651
+      target: 6651
+    - published: 6652
+      target: 6652
+    - published: 6653
+      target: 6653
+    - published: 6654
+      target: 6654
+    - published: 6655
+      target: 6655
+    - published: 6656
+      target: 6656
+    - published: 6657
+      target: 6657
+    - published: 6658
+      target: 6658
+    - published: 6659
+      target: 6659
+    - published: 6660
+      target: 6660
+    - published: 6661
+      target: 6661
+    - published: 6662
+      target: 6662
+    - published: 6663
+      target: 6663
+    - published: 6664
+      target: 6664
+    - published: 6665
+      target: 6665
+    - published: 6666
+      target: 6666
+    - published: 6667
+      target: 6667
+    - published: 6668
+      target: 6668
+    - published: 6669
+      target: 6669
+    - published: 6670
+      target: 6670
+    - published: 6671
+      target: 6671
+    - published: 6672
+      target: 6672
+    - published: 6673
+      target: 6673
+    - published: 6674
+      target: 6674
+    - published: 6675
+      target: 6675
+    - published: 6676
+      target: 6676
+    - published: 6677
+      target: 6677
+    - published: 6678
+      target: 6678
+    - published: 6679
+      target: 6679
+    - published: 6680
+      target: 6680
+    - published: 6681
+      target: 6681
+    - published: 6682
+      target: 6682
+    - published: 6683
+      target: 6683
+    - published: 6684
+      target: 6684
+    - published: 6685
+      target: 6685
+    - published: 6686
+      target: 6686
+    - published: 6687
+      target: 6687
+    - published: 6688
+      target: 6688
+    - published: 6689
+      target: 6689
+    - published: 6690
+      target: 6690
+    - published: 6691
+      target: 6691
+    - published: 6692
+      target: 6692
+    - published: 6693
+      target: 6693
+    - published: 6694
+      target: 6694
+    - published: 6695
+      target: 6695
+    - published: 6696
+      target: 6696
+    - published: 6697
+      target: 6697
+    - published: 6698
+      target: 6698
+    - published: 6699
+      target: 6699
+    privileged: true
+    restart: unless-stopped
+    volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /opt/isard/certs/default:/etc/pki/libvirt-spice:rw
+    - /opt/isard:/isard:rw
+    - /opt/isard/sshkeys/ietb-replica:/root/.ssh:rw
+  isard-nginx:
+    build:
+      context: .
+      dockerfile: dockers/nginx/Dockerfile
+    container_name: isard-nginx
+    depends_on:
+    - isard-app
+    image: isard/nginx:1.2.2
+    networks:
+      isard_network: {}
+    ports:
+    - published: 80
+      target: 80
+    - published: 443
+      target: 443
+    restart: unless-stopped
+    volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /opt/isard/certs/default:/etc/nginx/external:rw
+    - /opt/isard/logs/nginx:/var/log/nginx:rw
+  isard-squid:
+    build:
+      context: .
+      dockerfile: dockers/squid/Dockerfile
+    container_name: isard-squid
+    environment:
+      SPICE_HOSTS: "false"
+      SPICE_PROXY_PORT: '5899'
+    image: isard/squid:1.2.2
+    networks:
+      isard_network: {}
+    ports:
+    - mode: host
+      protocol: tcp
+      published: 5899
+      target: 5899
+    restart: "no"
+version: '3.5'
+
