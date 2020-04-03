@@ -14,7 +14,7 @@ services:
     container_name: isard-engine
     volumes:
       #### Source inside (Development)
-      - "/opt/src/isard/src:/isard"
+      - "/opt/isard-src/dockers/engine/src:/isard"
       #### Production
       - "/opt/isard/sshkeys:/root/.ssh"
       - "/opt/isard/certs:/certs"

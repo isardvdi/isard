@@ -9,9 +9,11 @@
 import rethinkdb as r
 import time, sys
 
-from ..lib.log import *
-from ..auth.authentication import Password
-from ..lib.load_config import load_config
+# ~ from ..lib.log import *
+import logging as log
+import bcrypt,string,random
+# ~ from ..auth.authentication import Password
+# ~ from ..lib.load_config import load_config
 from ..lib.admin_api import Certificates
 
 class Populate(object):
@@ -1062,4 +1064,142 @@ class Populate(object):
                 r.table(table).index_create(i).run()
                 r.table(table).index_wait(i).run()
 
-### disk_operations table not used anymore (delete if exists and remove creation)
+    ''''
+    HELPERS
+    ''''
+
+class Password(object):
+        def __init__(self):
+            None
+
+        def valid(self,plain_password,enc_password):
+            return bcrypt.checkpw(plain_password.encode('utf-8'), enc_password.encode('utf-8'))
+                
+        def encrypt(self,plain_password):
+            return bcrypt.hashpw(plain_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        
+        def generate_human(self,length=6):
+            chars = string.ascii_letters + string.digits + '!@#$*'
+            rnd = random.SystemRandom()
+            return ''.join(rnd.choice(chars) for i in range(length))
+
+class Certificates(object):
+    def __init__(self, pool='default'):
+        self.pool=pool
+        self.ca_file='/certs/'+pool+'/ca-cert.pem'
+        self.server_file='/certs/'+pool+'/server-cert.pem'       
+        
+
+    def get_viewer(self,update_db=False):
+        if update_db is False:
+            return self.__process_viewer()
+        else:
+            viewer = self.__process_viewer()
+            return self.__update_hypervisor_pool(viewer)
+
+    def update_hyper_pool(self):
+        viewer = self.__process_viewer()
+        return self.__update_hypervisor_pool(viewer)
+            
+    def __process_viewer(self):
+        ca_cert = server_cert = []
+        try:
+            ca_cert = pem.parse_file(self.ca_file)
+        except:
+            ca_cert =[]
+        ca_cert = False if len(ca_cert) == 0 else ca_cert[0].as_text()
+            
+        try:
+            server_cert = pem.parse_file(self.server_file)
+        except:
+            server_cert=[]
+        server_cert = False if len(server_cert) == 0 else server_cert[0].as_text()
+        
+        if server_cert is False:
+            return {'defaultMode':'Insecure',
+                                'certificate':False,
+                                'server-cert': False,
+                                'host-subject': False,
+                                'domain':False} 
+                                
+        db_viewer = self.__get_hypervisor_pool_viewer()
+        # ~ log.info(server_cert)
+        if server_cert == db_viewer['server-cert']:
+            return db_viewer
+        
+        '''From here we have a valid server_cert that has to be updated'''
+        server_cert_obj = crypto.load_certificate(crypto.FILETYPE_PEM, open(self.server_file).read())
+        
+        if ca_cert is False:
+            '''NEW VERIFIED CERT'''
+            if self.__extract_ca() is False:
+                log.error('Something failed while extracting ca root cert from server-cert.pem!!')
+                return {'defaultMode':'Insecure',
+                                    'certificate':False,
+                                    'server-cert': False,
+                                    'host-subject': False,
+                                    'domain':'ERROR IMPORTING CERTS'} 
+            return {'defaultMode':'Secure',
+                                'certificate':False,
+                                'server-cert': server_cert,
+                                'host-subject': False,
+                                'domain':server_cert_obj.get_subject().CN}               
+        else:
+            '''NEW SELF SIGNED CERT'''
+            ca_cert_obj = crypto.load_certificate(crypto.FILETYPE_PEM, open(self.ca_file).read())
+            hs=''
+            for t in server_cert_obj.get_subject().get_components():
+                hs=hs+t[0].decode("utf-8")+'='+t[1].decode("utf-8")+','
+            return {'defaultMode':'Secure',
+                                'certificate': ca_cert,
+                                'server-cert': server_cert,
+                                'host-subject': hs[:-1],
+                                'domain':ca_cert_obj.get_subject().CN}             
+        
+        
+    def __extract_ca(self):
+        try:
+            certs = pem.parse_file(self.server_file)
+        except:
+            log.error('Could not find server-cert.pem file in folder!!')
+            return False
+        if len(certs) < 2:
+            log.error('The server-cert.pem certificate is not the full chain!! Please add ca root certificate to server-cert.pem chain.')
+            return False
+        ca = certs[-1].as_text()
+        if os.path.isfile(self.ca_file):
+            log.error('The ca-cert.file already exists. This ca extraction can not be done.')
+            return False
+        try:
+            with open(self.ca_file, "w") as caFile:
+                res=caFile.write(ca)  
+        except:
+            log.error('Unable to write to server-cert.pem file!!')
+            return False
+        return ca        
+        
+    def __get_hypervisor_pool_viewer(self):
+        try:
+            with app.app_context():
+                viewer = r.table('hypervisors_pools').get(self.pool).pluck('viewer').run()['viewer']
+                if 'server-cert' not in viewer.keys():
+                    viewer['server-cert']=False
+                return viewer
+        except:
+            return {'defaultMode':'Insecure',
+                                'certificate':False,
+                                'server-cert': False,
+                                'host-subject': False,
+                                'domain':False} 
+        
+    def __update_hypervisor_pool(self,viewer):
+        with app.app_context():
+            r.table('hypervisors_pools').get(self.pool).update({'viewer':viewer}).run()
+            if viewer['defaultMode'] == 'Secure' and viewer['certificate'] is False:
+                try:
+                    if r.table('hypervisors').get('isard-hypervisor').run()['viewer_hostname'] == 'isard-hypervisor':
+                        r.table('hypervisors').get('isard-hypervisor').update({'viewer_hostname':viewer['domain']}).run()
+                except Exception as e:
+                    log.error('Could not update hypervisor isard-hypervisor with certificate name. You should do it through UI')
+        return True
+

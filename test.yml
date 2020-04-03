@@ -1,0 +1,142 @@
+networks:
+  isard_network:
+    external: true
+    name: isard_network
+services:
+  isard-database:
+    container_name: isard-database
+    image: rethinkdb
+    networks:
+      isard_network: null
+    restart: unless-stopped
+    volumes:
+    - /opt/isard/database:/data:rw
+    - /etc/localtime:/etc/localtime:ro
+  isard-dbmon:
+    container_name: isard-dbmon
+    image: rethinkdb
+    networks:
+      isard_network: null
+    restart: unless-stopped
+    volumes:
+    - /opt/isard/dbmon:/data:rw
+    - /etc/localtime:/etc/localtime:ro
+  isard-engine:
+    build:
+      context: /opt/isard-src
+      dockerfile: dockers/engine/Dockerfile
+      target: production
+    container_name: isard-engine
+    depends_on:
+    - isard-database
+    environment:
+      ISARD_PUBLIC_DOMAIN: "false"
+      TAG: 1.2.2-rc0
+      WEBSOCKIFY_VERSION: 0.1.0
+    image: isard/engine:1.2.2-rc0
+    networks:
+      isard_network: null
+    restart: unless-stopped
+    volumes:
+    - /opt/isard/certs:/certs:rw
+    - /etc/localtime:/etc/localtime:ro
+    - /opt/isard-src/dockers/engine/src:/isard:rw
+    - /opt/isard/database/wizard:/isard/install/wizard:rw
+    - /opt/isard/logs:/isard/logs:rw
+    - /opt/isard/sshkeys:/root/.ssh:rw
+  isard-grafana:
+    build:
+      context: /opt/isard-src
+      dockerfile: dockers/grafana/Dockerfile
+    container_name: isard-grafana
+    environment:
+      ISARD_PUBLIC_DOMAIN: "false"
+    image: isard/grafana:1.2.2-rc0
+    networks:
+      isard_network: null
+    restart: unless-stopped
+    volumes:
+    - /opt/isard/grafana/grafana/data:/grafana/data:rw
+    - /opt/isard/grafana/graphite/conf:/opt/graphite/conf:rw
+    - /opt/isard/grafana/graphite/storage:/opt/graphite/storage:rw
+  isard-haproxy:
+    build:
+      context: /opt/isard-src
+      dockerfile: dockers/haproxy/Dockerfile
+    container_name: isard-haproxy
+    image: isard/haproxy:1.2.2-rc0
+    networks:
+      isard_network: null
+    ports:
+    - published: 80
+      target: 80
+    - published: 443
+      target: 443
+    restart: unless-stopped
+    volumes:
+    - /opt/isard/certs/default:/certs:rw
+  isard-html5:
+    container_name: isard-html5
+    image: registry.gitlab.com/isard-vdi/websockify:0.1.0
+    networks:
+      isard_network: null
+    restart: unless-stopped
+  isard-hypervisor:
+    build:
+      context: /opt/isard-src
+      dockerfile: dockers/hypervisor/Dockerfile
+    container_name: isard-hypervisor
+    image: isard/hypervisor:1.2.2-rc0
+    networks:
+      isard_network: null
+    ports:
+    - published: 2022
+      target: 22
+    privileged: true
+    restart: unless-stopped
+    volumes:
+    - /etc/localtime:/etc/localtime:ro
+    - /opt/isard/certs/default:/etc/pki/libvirt-spice:rw
+    - /opt/isard/sshkeys/lenovo:/root/.ssh:rw
+  isard-spice:
+    build:
+      context: /opt/isard-src
+      dockerfile: dockers/spice/Dockerfile
+    container_name: isard-spice
+    image: isard/spice:1.2.2-rc0
+    networks:
+      isard_network: null
+    restart: unless-stopped
+  isard-static:
+    build:
+      context: /opt/isard-src
+      dockerfile: dockers/static/Dockerfile
+    container_name: isard-static
+    image: isard/static:1.2.2-rc0
+    networks:
+      isard_network: null
+    restart: unless-stopped
+  isard-ui:
+    build:
+      context: /opt/isard-src
+      dockerfile: dockers/ui/Dockerfile
+      target: production
+    container_name: isard-ui
+    environment:
+      ISARD_PUBLIC_DOMAIN: "false"
+      TAG: 1.2.2-rc0
+      WEBSOCKIFY_VERSION: 0.1.0
+    image: isard/ui:1.2.2-rc0
+    networks:
+      isard_network: null
+    restart: unless-stopped
+    volumes:
+    - /opt/isard/certs:/certs:rw
+    - /etc/localtime:/etc/localtime:ro
+    - /opt/isard-src/dockers/ui/src:/isard:rw
+    - /opt/isard/backups:/isard/backups:rw
+    - /opt/isard/database/wizard:/isard/install/wizard:rw
+    - /opt/isard/logs:/isard/logs:rw
+    - /opt/isard/sshkeys:/root/.ssh:rw
+version: '3.5'
+

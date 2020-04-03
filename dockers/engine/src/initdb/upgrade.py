@@ -9,10 +9,8 @@
 import rethinkdb as r
 import time, sys, requests
 
-from ..lib.log import *
-from ..auth.authentication import Password
-from ..lib.load_config import load_config
-
+#from ..lib.log import *
+import logging as log
 
 ''' 
 Update to new database release version when new code version release

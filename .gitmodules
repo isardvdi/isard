@@ -1,0 +1,3 @@
+[submodule "dockers/static/spice-web-client"]
+	path = dockers/static/spice-web-client
+	url = https://github.com/isard-vdi/spice-web-client

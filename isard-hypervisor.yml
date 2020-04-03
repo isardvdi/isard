@@ -8,7 +8,6 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
     ports:
       - "2022:22"
-      - "5900-6399:5900-6399"
     networks:
       - isard_network
 ## Uncomment following lines to use different network for
@@ -21,6 +20,24 @@ services:
       dockerfile: dockers/hypervisor/Dockerfile    
     privileged: true
     restart: unless-stopped
+
+  isard-spice:
+    container_name: isard-spice
+    networks:
+      - isard_network
+    image: isard/spice:${TAG:-latest}
+    build:
+      context: .
+      dockerfile: dockers/spice/Dockerfile
+    restart: unless-stopped
+
+  isard-html5:
+    container_name: isard-html5
+    networks:
+      - isard_network
+    image: registry.gitlab.com/isard-vdi/websockify:${WEBSOCKIFY_VERSION-latest}
+    restart: unless-stopped
+
 
 networks:
   isard_network:
