@@ -94,11 +94,11 @@ class DownloadThread(threading.Thread, object):
             time_elapsed += 0.2
             if time_elapsed > TIMEOUT_WAITING_HYPERVISOR_TO_DOWNLOAD:
                 logs.downloads.info(
-                    f'Timeout ({TIMEOUT_WAITING_HYPERVISOR_TO_DOWNLOAD} sec) waiting hypervisor online to download {url_base}')
+                    f'Timeout ({TIMEOUT_WAITING_HYPERVISOR_TO_DOWNLOAD} sec) waiting hypervisor online to download. Maybe there is no disk_operations selected in Hypervisors???')
                 if self.table == 'domains':
-                    update_domain_status('DownloadFailed', self.id, detail="downloaded disk")
+                    update_domain_status('Failed', self.id, detail="No hypervisor could do the disk_operations.")
                 else:
-                    update_status_table(self.table, 'DownloadFailed', self.id)
+                    update_status_table(self.table, 'Failed', self.id)
                 self.finalished_threads.append(self.path)
                 return False
 

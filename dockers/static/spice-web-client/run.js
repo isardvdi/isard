@@ -37,6 +37,16 @@ function getURLParameter (name) {
 	) || null;
 }
 
+function getParameter(name) {
+	var match = document.cookie.match(new RegExp('(^| )' + 'isard' + '=([^;]+)'));
+	if (!match) return '';
+
+	return JSON.parse(decodeURIComponent(atob(match[2])))['web_viewer'][name];
+}
+
+function getKeyboardLayout() {
+	return navigator.language.split('-')[1].toLowerCase()
+}
 
 wdi.Debug.debug = false; //enable logging to javascript console
 wdi.exceptionHandling = false; //disable "global try catch" to improve debugging
@@ -208,14 +218,14 @@ function start () {
 	app.run({
 		'callback': f,
 		'context': this,
-		'host': getURLParameter('host') || '10.11.12.100',
-		'port': getURLParameter('port') || 8000,
-		'protocol': getURLParameter('protocol') || 'ws',
-		'token': '1q2w3e4r',
+		'host': getParameter('host') || '',
+		'port': getParameter('port') || 8000,
+		'protocol': getURLParameter('protocol') || 'wss',
+		'token': getParameter('token') || '',
 		'vmHost': getURLParameter('vmhost') || false,
 		'vmPort': getURLParameter('vmport') || false,
 		'useBus': false,
-		'busHost': '10.11.12.200',
+		'busHost': '',
 		'busPort': 61613,
 		'busSubscriptions': ['/topic/00000000-0000-0000-0000-000000000000'],
 		'busUser': '00000000-0000-0000-0000-000000000000',
@@ -225,7 +235,7 @@ function start () {
         'heartbeatToken': 'heartbeat',
 		'heartbeatTimeout': 4000,//miliseconds
 		'busFileServerBaseUrl': 'https://10.11.12.200/fileserver/',
-		'layout': 'es',
+		'layout': getKeyboardLayout() || 'es',
 		'clientOffset': {
 			'x': 0,
 			'y': 0

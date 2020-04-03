@@ -1,0 +1,45 @@
+networks:
+  isard_network:
+    external: true
+    name: isard_network
+services:
+  isard-database:
+    container_name: isard-database-devel
+    image: rethinkdb
+    networks:
+      isard_network: null
+    ports:
+    - published: 8080
+      target: 8080
+    restart: "no"
+    volumes:
+    - /opt/isard/database:/data:rw
+    - /etc/localtime:/etc/localtime:ro
+  isard-engine:
+    build:
+      context: /opt/isard-src
+      dockerfile: dockers/engine/Dockerfile
+      target: production
+    container_name: isard-engine-devel
+    depends_on:
+    - isard-database
+    environment:
+      ISARD_PUBLIC_DOMAIN: "false"
+      TAG: 1.2.2-rc0
+      WEBSOCKIFY_VERSION: 0.1.0
+    image: isard/engine:1.2.2-rc0
+    networks:
+      isard_network: null
+    ports:
+    - published: 5555
+      target: 5555
+    restart: "no"
+    volumes:
+    - /opt/isard/certs:/certs:rw
+    - /etc/localtime:/etc/localtime:ro
+    - /opt/isard-src/dockers/engine/src:/isard:rw
+    - /opt/isard/database/wizard:/isard/install/wizard:rw
+    - /opt/isard/logs:/isard/logs:rw
+    - /opt/isard/sshkeys:/root/.ssh:rw
+version: '3.5'
+

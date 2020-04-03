@@ -289,12 +289,14 @@ wdi.Utils = {
          * If destHost and destPort are available, they are used to form explicit URL with host and port.
          * If not, an URL with destInfoToken is generated, host and port are resolved by backend service.
          */
-        if ( ! destHost || ! destPort ) {
-            url = protocol + '://' + host + ':' + port + '/websockify/destInfoToken/' + destInfoToken + '/type/' + type;
-        } else {
-            url = protocol + '://' + host + ':' + port + '/websockify/host/' + destHost + '/port/' + destPort + '/type/' + type;
-        }
-        return url;
+
+        // if ( ! destHost || ! destPort ) {
+        //     url = protocol + '://' + host + ':' + port + '/websockify/destInfoToken/' + destInfoToken + '/type/' + type;
+        // } else {
+        //     url = protocol + '://' + host + ':' + port + '/websockify/host/' + destHost + '/port/' + destPort + '/type/' + type;
+		// }
+
+        return protocol + '://' + window.location.host + '/' + host + '/' + port;
     }
 };
 

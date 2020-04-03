@@ -64,13 +64,25 @@ function setViewerButtons(id,socket,offer){
     });    
 }
 
+function setCookie(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+
 function startClientViewerSocket(socket){
     socket.on('domain_viewer', function (data) {
         var data = JSON.parse(data);
        
         if(data['kind']=='url'){
             viewer=data['viewer']
-            window.open(viewer.replace('<domain>',document.domain)); //, '_blank', 'toolbar=0,location=0,menubar=0');            
+            //~ setCookie('isard',data['cookie'],1);
+            document.cookie=data['cookie'];
+            window.open(viewer); //, '_blank', 'toolbar=0,location=0,menubar=0');            
             
         }        
          if(data['kind']=='file'){
@@ -114,8 +126,8 @@ function getOS() {
 }
     
 //~ function getClientViewer(data,socket){
-				//~ if(detectXpiPlugin()){
-					//~ //SPICE-XPI Plugin
+                //~ if(detectXpiPlugin()){
+                    //~ //SPICE-XPI Plugin
                     //~ if(isXpiBlocked()){
                             //~ new PNotify({
                             //~ title: "Plugin blocked",
@@ -133,7 +145,7 @@ function getOS() {
                     //~ }else{
                     //~ socket.emit('domain_viewer',{'pk':data['id'],'kind':'xpi'})                       
                     //~ }
-				//~ }else{
+                //~ }else{
                         //~ new PNotify({
                             //~ title: 'Choose display connection',
                             //~ text: 'Open in browser (html5) or download remote-viewer file.',
@@ -188,34 +200,34 @@ function getOS() {
                         //~ });                        
 
 
-					//~ }
+                    //~ }
 
 //~ }
 
 
 
-	//~ function detectXpiPlugin(){
-		//~ var pluginsFound = false;
-		//~ if (navigator.plugins && navigator.plugins.length > 0) {
-			//~ var daPlugins = [ "Spice" ];
-			//~ var pluginsAmount = navigator.plugins.length;
-			//~ for (counter = 0; counter < pluginsAmount; counter++) {
-				//~ var numFound = 0;
-				//~ for (namesCounter = 0; namesCounter < daPlugins.length; namesCounter++) {
-					//~ if ((navigator.plugins[counter].name.indexOf(daPlugins[namesCounter]) > 0)
-						//~ || (navigator.plugins[counter].description.indexOf(daPlugins[namesCounter]) >= 0)) {
-						//~ numFound++;
-					//~ }
-				//~ }
-				//~ if (numFound == daPlugins.length) {
-				//~ pluginsFound = true;
-				//~ break;
-				//~ }
-			//~ }
+    //~ function detectXpiPlugin(){
+        //~ var pluginsFound = false;
+        //~ if (navigator.plugins && navigator.plugins.length > 0) {
+            //~ var daPlugins = [ "Spice" ];
+            //~ var pluginsAmount = navigator.plugins.length;
+            //~ for (counter = 0; counter < pluginsAmount; counter++) {
+                //~ var numFound = 0;
+                //~ for (namesCounter = 0; namesCounter < daPlugins.length; namesCounter++) {
+                    //~ if ((navigator.plugins[counter].name.indexOf(daPlugins[namesCounter]) > 0)
+                        //~ || (navigator.plugins[counter].description.indexOf(daPlugins[namesCounter]) >= 0)) {
+                        //~ numFound++;
+                    //~ }
+                //~ }
+                //~ if (numFound == daPlugins.length) {
+                //~ pluginsFound = true;
+                //~ break;
+                //~ }
+            //~ }
 
-		//~ }
-		//~ return pluginsFound;
-	//~ }
+        //~ }
+        //~ return pluginsFound;
+    //~ }
 
     //~ function isXpiBlocked(){
         //~ var embed = document.embeds[0];
@@ -227,135 +239,135 @@ function getOS() {
                     //////# ~ viewer['port'] = viewer['port'] if viewer['port'] else viewer['tlsport']
                     ////# ~ viewer['port'] = "5"+ viewer['port']
     
-	//~ function openTCP(spice_host,spice_port,spice_passwd)
-	//~ {
-		//~ var embed = document.embeds[0];
-		//~ embed.hostIP = spice_host;
-		//~ embed.port = spice_port;
-		//~ embed.Password = spice_passwd;
-		//~ embed.fullScreen = true;
-		//~ embed.fAudio = true;
-		//~ embed.UsbListenPort = 1;
-		//~ embed.UsbAutoShare = 1;
-		//~ embed.connect();
-	//~ }
+    //~ function openTCP(spice_host,spice_port,spice_passwd)
+    //~ {
+        //~ var embed = document.embeds[0];
+        //~ embed.hostIP = spice_host;
+        //~ embed.port = spice_port;
+        //~ embed.Password = spice_passwd;
+        //~ embed.fullScreen = true;
+        //~ embed.fAudio = true;
+        //~ embed.UsbListenPort = 1;
+        //~ embed.UsbAutoShare = 1;
+        //~ embed.connect();
+    //~ }
 
-	//~ function openTLS(spice_host,spice_port,spice_tls,spice_passwd,ca)
-	//~ {		
-		//~ var embed = document.embeds[0];
-		//~ embed.hostIP = spice_host;
-		// embed.port = spice_port;
-		//~ embed.SecurePort = spice_tls;
-		//~ embed.Password = spice_passwd;
-		//~ embed.CipherSuite = "";
-		//~ embed.SSLChannels = "";
-		//~ embed.HostSubject = "";
-		//~ embed.fullScreen = true;
-		//~ embed.AdminConsole = "";
-		//~ embed.Title = "";
-		//~ embed.dynamicMenu = "";
-		//~ embed.NumberOfMonitors = "";
-		//~ embed.GuestHostName = "";
-		//~ embed.HotKey = "";
-		//~ embed.NoTaskMgrExecution = "";
-		//~ embed.SendCtrlAltDelete = "";
-		//~ embed.UsbListenPort = "";
-		//~ embed.UsbAutoShare = true;
-		//~ embed.Smartcard = "";
-		//~ embed.ColorDepth = "";
-		//~ embed.DisableEffects = "";
-		//~ embed.TrustStore = ca;
-		//~ embed.Proxy = "";
-		//~ embed.connect();
-	//~ }
+    //~ function openTLS(spice_host,spice_port,spice_tls,spice_passwd,ca)
+    //~ {       
+        //~ var embed = document.embeds[0];
+        //~ embed.hostIP = spice_host;
+        // embed.port = spice_port;
+        //~ embed.SecurePort = spice_tls;
+        //~ embed.Password = spice_passwd;
+        //~ embed.CipherSuite = "";
+        //~ embed.SSLChannels = "";
+        //~ embed.HostSubject = "";
+        //~ embed.fullScreen = true;
+        //~ embed.AdminConsole = "";
+        //~ embed.Title = "";
+        //~ embed.dynamicMenu = "";
+        //~ embed.NumberOfMonitors = "";
+        //~ embed.GuestHostName = "";
+        //~ embed.HotKey = "";
+        //~ embed.NoTaskMgrExecution = "";
+        //~ embed.SendCtrlAltDelete = "";
+        //~ embed.UsbListenPort = "";
+        //~ embed.UsbAutoShare = true;
+        //~ embed.Smartcard = "";
+        //~ embed.ColorDepth = "";
+        //~ embed.DisableEffects = "";
+        //~ embed.TrustStore = ca;
+        //~ embed.Proxy = "";
+        //~ embed.connect();
+    //~ }
   
 //~ function chooseViewer(data,socket){
-	//~ os=getOS()
-	//~ new PNotify({
-		//~ title: 'Choose display connection',
-		//~ text: 'Open in browser (html5) or download remote-viewer file.',
-		//~ icon: 'glyphicon glyphicon-question-sign',
-		//~ hide: false,
-		//~ delay: 3000,
-		//~ confirm: {
-			//~ confirm: true,
-			//~ buttons: [
-				//~ {
-					//~ text: 'SPICE BROWSER',
-					//~ addClass: 'btn-primary',
-					//~ click: function(notice){
-						//~ notice.update({
-							//~ title: 'You choosed spice browser viewer', text: 'Viewer will be opened in new window.\n Please allow popups!', icon: true, type: 'info', hide: true,
-							//~ confirm: {
-								//~ confirm: false
-							//~ },
-							//~ buttons: {
-								//~ closer: true,
-								//~ sticker: false
-							//~ }
-						//~ });                                            
-						//~ socket.emit('domain_viewer',{'pk':data['id'],'kind':'spice-html5','os':os});
-					//~ }
-				//~ },
-				//~ {
-					//~ text: 'SPICE CLIENT',
-					//~ addClass: 'btn-primary',
-					//~ click: function(notice){
-						//~ notice.update({
-							//~ title: 'You choosed spice client viewer', text: 'File will be downloaded. Open it with spice remote-viewer.', icon: true, type: 'info', hide: true,
-							//~ confirm: {
-								//~ confirm: false
-							//~ },
-							//~ buttons: {
-								//~ closer: true,
-								//~ sticker: false
-							//~ }
-						//~ });                                            
-						//~ socket.emit('domain_viewer',{'pk':data['id'],'kind':'spice-client','os':os});
-					//~ }
-				//~ },				
-				//~ {
-					//~ text: 'VNC BROWSER',
-					//~ addClass: 'btn-primary',
-					//~ click: function(notice){
-						//~ notice.update({
-							//~ title: 'You choosed VNC browser viewer', text: 'Viewer will be opened in new window.\n Please allow popups!', icon: true, type: 'info', hide: true,
-							//~ confirm: {
-								//~ confirm: false
-							//~ },
-							//~ buttons: {
-								//~ closer: true,
-								//~ sticker: false
-							//~ }
-						//~ });                                            
-						//~ socket.emit('domain_viewer',{'pk':data['id'],'kind':'vnc-html5','os':os});
-					//~ }
-				//~ },
-				//~ {
-					//~ text: 'VNC CLIENT',
-					//~ addClass: 'btn-primary',
-					//~ click: function(notice){
-						//~ notice.update({
-							//~ title: 'You choosed VNC client viewer', text: 'File will be downloaded. Open it with VNC client app.', icon: true, type: 'info', hide: true,
-							//~ confirm: {
-								//~ confirm: false
-							//~ },
-							//~ buttons: {
-								//~ closer: true,
-								//~ sticker: false
-							//~ }
-						//~ });                                            
-						//~ socket.emit('domain_viewer',{'pk':data['id'],'kind':'vnc-client','os':os});
-					//~ }
-				//~ },	
-			//~ ]
-		//~ },
-		//~ buttons: {
-			//~ closer: false,
-			//~ sticker: false
-		//~ },
-		//~ history: {
-			//~ history: false
-		//~ }
-	//~ });                        
+    //~ os=getOS()
+    //~ new PNotify({
+        //~ title: 'Choose display connection',
+        //~ text: 'Open in browser (html5) or download remote-viewer file.',
+        //~ icon: 'glyphicon glyphicon-question-sign',
+        //~ hide: false,
+        //~ delay: 3000,
+        //~ confirm: {
+            //~ confirm: true,
+            //~ buttons: [
+                //~ {
+                    //~ text: 'SPICE BROWSER',
+                    //~ addClass: 'btn-primary',
+                    //~ click: function(notice){
+                        //~ notice.update({
+                            //~ title: 'You choosed spice browser viewer', text: 'Viewer will be opened in new window.\n Please allow popups!', icon: true, type: 'info', hide: true,
+                            //~ confirm: {
+                                //~ confirm: false
+                            //~ },
+                            //~ buttons: {
+                                //~ closer: true,
+                                //~ sticker: false
+                            //~ }
+                        //~ });                                            
+                        //~ socket.emit('domain_viewer',{'pk':data['id'],'kind':'spice-html5','os':os});
+                    //~ }
+                //~ },
+                //~ {
+                    //~ text: 'SPICE CLIENT',
+                    //~ addClass: 'btn-primary',
+                    //~ click: function(notice){
+                        //~ notice.update({
+                            //~ title: 'You choosed spice client viewer', text: 'File will be downloaded. Open it with spice remote-viewer.', icon: true, type: 'info', hide: true,
+                            //~ confirm: {
+                                //~ confirm: false
+                            //~ },
+                            //~ buttons: {
+                                //~ closer: true,
+                                //~ sticker: false
+                            //~ }
+                        //~ });                                            
+                        //~ socket.emit('domain_viewer',{'pk':data['id'],'kind':'spice-client','os':os});
+                    //~ }
+                //~ },              
+                //~ {
+                    //~ text: 'VNC BROWSER',
+                    //~ addClass: 'btn-primary',
+                    //~ click: function(notice){
+                        //~ notice.update({
+                            //~ title: 'You choosed VNC browser viewer', text: 'Viewer will be opened in new window.\n Please allow popups!', icon: true, type: 'info', hide: true,
+                            //~ confirm: {
+                                //~ confirm: false
+                            //~ },
+                            //~ buttons: {
+                                //~ closer: true,
+                                //~ sticker: false
+                            //~ }
+                        //~ });                                            
+                        //~ socket.emit('domain_viewer',{'pk':data['id'],'kind':'vnc-html5','os':os});
+                    //~ }
+                //~ },
+                //~ {
+                    //~ text: 'VNC CLIENT',
+                    //~ addClass: 'btn-primary',
+                    //~ click: function(notice){
+                        //~ notice.update({
+                            //~ title: 'You choosed VNC client viewer', text: 'File will be downloaded. Open it with VNC client app.', icon: true, type: 'info', hide: true,
+                            //~ confirm: {
+                                //~ confirm: false
+                            //~ },
+                            //~ buttons: {
+                                //~ closer: true,
+                                //~ sticker: false
+                            //~ }
+                        //~ });                                            
+                        //~ socket.emit('domain_viewer',{'pk':data['id'],'kind':'vnc-client','os':os});
+                    //~ }
+                //~ },  
+            //~ ]
+        //~ },
+        //~ buttons: {
+            //~ closer: false,
+            //~ sticker: false
+        //~ },
+        //~ history: {
+            //~ history: false
+        //~ }
+    //~ });                        
 //~ }

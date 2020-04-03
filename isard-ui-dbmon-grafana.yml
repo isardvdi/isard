@@ -5,8 +5,8 @@ services:
     networks:
       - isard_network
     ports:
-      - "80:80"
       - "443:443"
+      - "444:444"
     volumes:
       - "/opt/isard/certs/default:/certs"
     image: isard/haproxy:${TAG:-latest}

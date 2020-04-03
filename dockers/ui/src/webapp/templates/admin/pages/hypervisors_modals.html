@@ -21,8 +21,8 @@
 <!--
               action="{{ url_for('admin_hypervisors') }}" method="POST" novalidate>
 -->
-			  <div class="x_panel">
-					<div class="x_content">
+              <div class="x_panel">
+                    <div class="x_content">
                      <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="id">Id <span class="required">*</span>
                         </label>
@@ -37,34 +37,36 @@
                            <textarea id="textarea" name="description" class="form-control col-md-7 col-xs-12"></textarea>
                         </div>
                      </div>
-				</div>
-			  </div>
+                </div>
+              </div>
 
-			  <div class="x_panel">
-					 <div class="x_title">
-						<h2>External address for client viewers<small></small></h2>
-						<ul class="nav navbar-right panel_toolbox">
-						   <li class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-						   </li>
-						</ul>
-						<div class="clearfix"></div>
-					 </div>
-					 <div class="x_content">
+<!--
+              <div class="x_panel">
+                     <div class="x_title">
+                        <h2>External viewers address<small></small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                           <li class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                           </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                     </div>
+                     <div class="x_content">
 
  
-                </div>	
-			  </div>
+                </div>  
+              </div>
+-->
               
-			  <div class="x_panel">
-					 <div class="x_title">
-						<h2>Network ssh info<small></small></h2>
-						<ul class="nav navbar-right panel_toolbox">
-						   <li class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-						   </li>
-						</ul>
-						<div class="clearfix"></div>
-					 </div>
-					 <div class="x_content">
+              <div class="x_panel">
+                     <div class="x_title">
+                        <h2>Network ssh monitoring info<small></small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                           <li class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                           </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                     </div>
+                     <div class="x_content">
 
                      <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="hostname">Hostname <span class="required">*</span>
@@ -90,19 +92,19 @@
                         </div>
                      </div>
                                           
-                </div>	
-			  </div>
+                </div>  
+              </div>
 
-			  <div class="x_panel">
-					 <div class="x_title">
-						<h2>Capabilities & Pools<small></small></h2>
-						<ul class="nav navbar-right panel_toolbox">
-						   <li class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
-						   </li>
-						</ul>
-						<div class="clearfix"></div>
-					 </div>
-					 <div class="x_content"> 
+              <div class="x_panel">
+                     <div class="x_title">
+                        <h2>Capabilities & Pools<small></small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                           <li class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
+                           </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                     </div>
+                     <div class="x_content"> 
                      <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="capabilities-disk_operations">Disk operations
                         </label>
@@ -113,7 +115,7 @@
                                   <input type="checkbox" id="capabilities-disk_operations" name="capabilities-disk_operations" class="flat"  style="position: absolute; opacity: 0;">
                                   <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;">
                                   </ins>
-                              </div> Select if it can operate disks
+                              </div> Select if it can operate desktop disks
                             </label>
                           </div>                
                         </div>
@@ -129,7 +131,7 @@
                                   <input type="checkbox" id="capabilities_hypervisor" name="capabilities-hypervisor" class="flat capabilities_hypervisor"  style="position: absolute; opacity: 0;">
                                   <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;">
                                   </ins>
-                              </div> Select if can launch desktops
+                              </div> Select if can start desktops
                             </label>
                           </div> 
                         </div>                                              
@@ -137,31 +139,33 @@
 
                       <div id="viewer_fields" style="display:none;">
                          <div class="item form-group" id="viewer_">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="viewer_hostname">Client viewers address
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="viewer_hostname">Viewer squid address (if another server)
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                               <input id="viewer_hostname" class="form-control col-md-7 col-xs-12" maxlength="40" pattern="[-_.a-zA-Z0-9]+$" data-parsley-length="[4, 40]" name="viewer_hostname" placeholder="External reacheable ip/dns name" type="text">
+                               <input id="viewer_hostname" class="form-control col-md-7 col-xs-12" maxlength="40" pattern="[-_.a-zA-Z0-9]+$" data-parsley-length="[4, 40]" name="viewer_hostname" placeholder="Reacheable ip/dns name" type="text">
                             </div>
                          </div>  
 
+<!--
                          <div class="item form-group" id="viewer_">
                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="viewer_nat_hostname">Client viewers nat address
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                               <input id="viewer_nat_hostname" class="form-control col-md-7 col-xs-12" maxlength="40" pattern="[-_.a-zA-Z0-9]+$" data-parsley-length="[4, 40]" name="viewer_nat_hostname" placeholder="External reacheable ip/dns name" type="text">
+                               <input disabled id="viewer_nat_hostname" class="form-control col-md-7 col-xs-12" maxlength="40" pattern="[-_.a-zA-Z0-9]+$" data-parsley-length="[4, 40]" name="viewer_nat_hostname" placeholder="External reacheable ip/dns name" type="text">
                             </div>
                          </div>
                          <div class="item form-group" id="viewer_">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="viewer_nat_offset">Client viewers TCP offset
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="viewer_nat_offset">Client viewers port offsset
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                               <input id="viewer_nat_offset" class="form-control col-md-7 col-xs-12" data-parsley-range='[0, 59635]' name="viewer_nat_offset" placeholder="Will be added to hyper spice port" type="text">
+                               <input disabled id="viewer_nat_offset" class="form-control col-md-7 col-xs-12" data-parsley-range='[0, 59635]' name="viewer_nat_offset" placeholder="Will be added to hyper spice port" type="text">
                             </div>
                          </div>                            
+-->
                         </div>
                                                   
-					<div class="item form-group">
-						<label>Pools:</label>
+                    <div class="item form-group">
+                        <label>Pools:</label>
                             <select class="form-control" id="hypervisors_pools_dropdown" name="hypervisors_pools">
                             </select>
                     </div>                     
@@ -207,8 +211,8 @@
 <!--
               action="{{ url_for('admin_hypervisors') }}" method="POST" novalidate>
 -->
-			  <div class="x_panel">
-					<div class="x_content">
+              <div class="x_panel">
+                    <div class="x_content">
                          <input type="hidden" id="id" name="id"/>                        
                      <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="id">Id <span class="required">*</span>
@@ -224,19 +228,19 @@
                            <textarea id="textarea" name="description" class="form-control col-md-7 col-xs-12"></textarea>
                         </div>
                      </div>
-				</div>
-			  </div>
+                </div>
+              </div>
               
-			  <div class="x_panel">
-					 <div class="x_title">
-						<h2>Network ssh info<small></small></h2>
-						<ul class="nav navbar-right panel_toolbox">
-						   <li class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-						   </li>
-						</ul>
-						<div class="clearfix"></div>
-					 </div>
-					 <div class="x_content">
+              <div class="x_panel">
+                     <div class="x_title">
+                        <h2>Network ssh monitoring info<small></small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                           <li class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                           </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                     </div>
+                     <div class="x_content">
 
                      <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="hostname">Hostname <span class="required">*</span>
@@ -262,19 +266,19 @@
                         </div>
                      </div>
                                           
-                </div>	
-			  </div>
+                </div>  
+              </div>
 
-			  <div class="x_panel">
-					 <div class="x_title">
-						<h2>Capabilities & Pools<small></small></h2>
-						<ul class="nav navbar-right panel_toolbox">
-						   <li class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
-						   </li>
-						</ul>
-						<div class="clearfix"></div>
-					 </div>
-					 <div class="x_content"> 
+              <div class="x_panel">
+                     <div class="x_title">
+                        <h2>Capabilities & Pools<small></small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                           <li class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
+                           </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                     </div>
+                     <div class="x_content"> 
                      <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="capabilities-disk_operations">Disk operations
                         </label>
@@ -309,15 +313,16 @@
 
                       <div id="viewer_fields" style="display:block;">
                          <div class="item form-group" id="viewer_">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="viewer_hostname">Client viewers address
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="viewer_hostname">Viewer squid address (if another server)
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                <input id="viewer_hostname" class="form-control col-md-7 col-xs-12" maxlength="40" pattern="[-_.a-zA-Z0-9]+$" data-parsley-length="[4, 40]" name="viewer_hostname" placeholder="External reacheable ip/dns name" type="text">
                             </div>
                          </div>  
+<!--
 
                          <div class="item form-group" id="viewer_">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="viewer_nat_hostname">Client viewers nat address
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="viewer_nat_hostname">Client viewers EXTERNAL address
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                <input id="viewer_nat_hostname" class="form-control col-md-7 col-xs-12" maxlength="40" pattern="[-_.a-zA-Z0-9]+$" data-parsley-length="[4, 40]" name="viewer_nat_hostname" placeholder="External reacheable ip/dns name" type="text">
@@ -325,16 +330,17 @@
                          </div> 
                          
                          <div class="item form-group" id="viewer_">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="viewer_nat_offset">Client viewers TCP offset
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="viewer_nat_offset">NOT USED Client viewers TCP offset
                             </label>
                             <div class="col-md-6 col-sm-6 col-xs-12">
                                <input id="viewer_nat_offset" class="form-control col-md-7 col-xs-12" data-parsley-range='[0, 59635]' name="viewer_nat_offset" placeholder="Will be added to hyper spice port" type="text">
                             </div>
                          </div> 
+-->
                         </div>
                                                   
-					<div class="item form-group">
-						<label>Pools:</label>
+                    <div class="item form-group">
+                        <label>Pools:</label>
                             <select class="form-control" id="hypervisors_pools_dropdown" name="hypervisors_pools">
                             </select>
                     </div>                     
@@ -377,8 +383,8 @@
             <!-- Modal Body -->
             <div class="modal-body">
               <form id="modalAdd" class="form-horizontal form-label-left" action="{{ url_for('hypervisors_pools_get') }}" method="POST" novalidate>
-			  <div class="x_panel">
-					<div class="x_content">
+              <div class="x_panel">
+                    <div class="x_content">
                      <div class="item form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">Name <span class="required">*</span>
                         </label>
@@ -393,19 +399,19 @@
                            <textarea id="textarea" name="description" class="form-control col-md-7 col-xs-12"></textarea>
                         </div>
                      </div>
-				</div>
-			  </div>
+                </div>
+              </div>
 
-			  <div class="x_panel">
-					 <div class="x_title">
-						<h2>System Paths<small></small></h2>
-						<ul class="nav navbar-right panel_toolbox">
-						   <li class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-						   </li>
-						</ul>
-						<div class="clearfix"></div>
-					 </div>
-					 <div class="x_content">
+              <div class="x_panel">
+                     <div class="x_title">
+                        <h2>System Paths<small></small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                           <li class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                           </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                     </div>
+                     <div class="x_content">
 
 
 
@@ -554,16 +560,16 @@
                     
                 </div>
             </div>
-			  <div class="x_panel">
-					 <div class="x_title">
-						<h2>Network Interfaces<small></small></h2>
-						<ul class="nav navbar-right panel_toolbox">
-						   <li class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
-						   </li>
-						</ul>
-						<div class="clearfix"></div>
-					 </div>
-					 <div class="x_content"> 
+              <div class="x_panel">
+                     <div class="x_title">
+                        <h2>Network Interfaces<small></small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                           <li class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
+                           </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                     </div>
+                     <div class="x_content"> 
                     <div class="item form-group">
                         <label>Interfaces:</label>
                         <select class="form-control" id="interfaces" name="interfaces">
@@ -573,16 +579,16 @@
                 </div>
               </div>
 
-			  <div class="x_panel">
-					 <div class="x_title">
-						<h2>Viewer<small></small></h2>
-						<ul class="nav navbar-right panel_toolbox">
-						   <li class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
-						   </li>
-						</ul>
-						<div class="clearfix"></div>
-					 </div>
-					 <div class="x_content"> 
+              <div class="x_panel">
+                     <div class="x_title">
+                        <h2>Viewer<small></small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                           <li class="pull-right"><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
+                           </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                     </div>
+                     <div class="x_content"> 
                     <div class="item form-group">
                         <label>Interfaces:</label>
                         <select class="form-control" id="viewer-defaultMode" name="viewer-defaultMode">

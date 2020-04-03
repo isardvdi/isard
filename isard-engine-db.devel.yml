@@ -1,0 +1,15 @@
+version: "3.5"
+services:
+  isard-database:
+    container_name: isard-database-devel
+    ports:
+      - "8080:8080"
+    restart: "no"
+
+  isard-engine:
+    container_name: isard-engine-devel
+    volumes:
+      - "/opt/isard-src/dockers/engine/src:/isard"
+    ports:
+      - "5555:5555"
+    restart: "no"

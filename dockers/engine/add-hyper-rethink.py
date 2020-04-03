@@ -20,7 +20,7 @@ parser.add_option('-o', '--pool',
     help="Pool for hypervisor. Default=default", default="default")
 parser.add_option('-d', '--disk-capability',
     action="store", dest="diskcap",
-    help="Disk capabilities. Default=False", default=False)
+    help="Disk capabilities. Default=False", default=True)
 parser.add_option('-v', '--virtual-capability',
     action="store", dest="hypercap",
     help="Hypervisor capabilities. Default=True", default=True)    
